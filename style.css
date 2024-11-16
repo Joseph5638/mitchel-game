@@ -1,174 +1,134 @@
+/* General Styles */
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom, #87ceeb, #1e90ff);
-  }
-  
-  #game-container {
-    position: relative;
-    width: 400px;
-    height: 600px;
-    background: white;
-    border: 5px solid black;
-    overflow: hidden;
-  }
-  
-  #paddle {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    width: 80px;
-    height: 15px;
-    background: black;
-    transform: translateX(-50%);
-  }
-  
-  #ball {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    background: red;
-    border-radius: 50%;
-    transform: translateX(-50%);
-  }
-  #restart-button {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #1e90ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  }
-  
-  #restart-button:hover {
-    background-color: #104e8b;
-  }
-  #game-title {
-    text-align: center;
-  
-    position: absolute; /* Allows precise positioning */
-    top: 10px; /* Position near the top of the page */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust centering */
-    font-size: 32px; /* Font size for visibility */
-    font-family: 'Arial', sans-serif; /* Clean font */
-    color: #333; /* Neutral color */
-    text-transform: uppercase; /* Uppercase text */
-    letter-spacing: 2px; /* Adds some spacing */
-    margin: 0; /* Removes default margin */
-  }#game-title {
-  position: absolute; /* Allows precise positioning */
-  top: 10px; /* Position near the top of the page */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust centering */
-  font-size: 32px; /* Font size for visibility */
-  font-family: 'Arial', sans-serif; /* Clean font */
-  color: #333; /* Neutral color */
-  text-transform: uppercase; /* Uppercase text */
-  letter-spacing: 2px; /* Adds some spacing */
-  margin: 0; /* Removes default margin */
-  z-index: 1000; /* Ensures it's on top of other elements */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-/* Style for the Welcome Screen */
+/* Welcome Screen */
 #welcome-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  color: #fff;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f4f4f4;
   text-align: center;
-  font-family: 'Arial', sans-serif;
-  z-index: 999;
 }
 
 #welcome-screen h1 {
   font-size: 36px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-#welcome-screen p {
-  font-size: 20px;
-  margin-bottom: 40px;
-}
-
-#welcome-screen #start-button {
+#welcome-screen button {
   padding: 15px 30px;
+  font-size: 18px;
   background-color: #3498db;
   color: white;
   border: none;
-  font-size: 18px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-#welcome-screen #start-button:hover {
+#welcome-screen button:hover {
   background-color: #2980b9;
 }
 
-/* Game Elements remain the same */
+/* Game Container */
 #game-container {
-  display: none; /* Hidden until the game starts */
+  background-color: black;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
 
-#game-title {
-  font-size: 32px;
-  color: #333;
-  text-align: center;
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: white;
+  background-color: #222;
+}
+
+#header h1 {
+  font-size: 24px;
 }
 
 #restart-button {
   padding: 10px 20px;
-  background-color: #e74c3c;
+  font-size: 16px;
+  background-color: red;
   color: white;
   border: none;
-  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-}
-
-#restart-button:hover {
-  background-color: #c0392b;
 }
 
 #paddle {
   position: absolute;
-  width: 80px;
+  bottom: 30px;
+  left: 50%;
+  width: 120px;
   height: 20px;
-  background-color: #2ecc71;
-  bottom: 0;
+  background-color: white;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  transition: transform 0.1s;
 }
 
 #ball {
   position: absolute;
+  bottom: 60px;
+  left: 50%;
   width: 20px;
   height: 20px;
+  background-color: red;
   border-radius: 50%;
-  background-color: #3498db;
+  transform: translateX(-50%);
 }
 
-#score, #lives {
-  font-size: 18px;
+#lives,
+#score {
   position: absolute;
-  top: 20px;
-  color: #fff;
+  top: 10px;
+  color: white;
+  font-size: 18px;
 }
 
-      
+#lives {
+  left: 10px;
+}
+
+#score {
+  right: 10px;
+}
+
+/* Controls */
+#controls {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1000;
+}
+
+#controls button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#controls button:hover {
+  background-color: #2980b9;
+}
+
