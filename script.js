@@ -1,120 +1,91 @@
-const welcomeScreen = document.getElementById('welcome-screen');
-const startButton = document.getElementById('start-button');
-const gameContainer = document.getElementById('game-container');
-const paddle = document.getElementById('paddle');
-const ball = document.getElementById('ball');
-const restartButton = document.getElementById('restart-button');
-const livesText = document.getElementById('lives');
-const scoreText = document.getElementById('score');
+// Elements
+const startButton = document.getElementById("start-button");
+const welcomeScreen = document.getElementById("welcome-screen");
+const gameContainer = document.getElementById("game-container");
+const paddle = document.getElementById("paddle");
+const ball = document.getElementById("ball");
+const leftButton = document.getElementById("left-button");
+const rightButton = document.getElementById("right-button");
+const restartButton = document.getElementById("restart-button");
+const livesDisplay = document.getElementById("lives");
+const scoreDisplay = document.getElementById("score");
 
-// Load sound effects
-const bounceSound = new Audio('bounce.mp3');
-const missSound = new Audio('miss.mp3');
-
-let paddleSpeed = 8;
-let ballSpeed = 3.5;
-let ballDirectionX = 1;
-let ballDirectionY = 1;
-let ballX = 190;
+// Game Variables
+let paddleX = parseInt(window.getComputedStyle(paddle).left);
+let ballX = 0;
 let ballY = 0;
-let paddleX = 160;
-let movingLeft = false;
-let movingRight = false;
+let ballSpeedX = 3;
+let ballSpeedY = -3;
+let paddleSpeed = 10;
 let lives = 3;
 let score = 0;
+let isMovingLeft = false;
+let isMovingRight = false;
 
-// Show the game screen after the welcome screen
-startButton.addEventListener('click', () => {
-  welcomeScreen.style.display = 'none'; // Hide the welcome screen
-  gameContainer.style.display = 'block'; // Show the game
-  movePaddle();
-  moveBall();
+// Start Game
+startButton.addEventListener("click", () => {
+  welcomeScreen.style.display = "none";
+  gameContainer.style.display = "block";
+  startGame();
 });
 
-// Paddle movement logic
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowLeft') movingLeft = true;
-  if (event.key === 'ArrowRight') movingRight = true;
+// Restart Game
+restartButton.addEventListener("click", () => {
+  resetGame();
 });
 
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'ArrowLeft') movingLeft = false;
-  if (event.key === 'ArrowRight') movingRight = false;
+// Paddle Controls
+leftButton.addEventListener("mousedown", () => (isMovingLeft = true));
+leftButton.addEventListener("mouseup", () => (isMovingLeft = false));
+rightButton.addEventListener("mousedown", () => (isMovingRight = true));
+rightButton.addEventListener("mouseup", () => (isMovingRight = false));
+
+// Paddle Touch Controls
+paddle.addEventListener("touchstart", (e) => (touchStartX = e.touches[0].clientX));
+paddle.addEventListener("touchmove", (e) => {
+  const touchX = e.touches[0].clientX;
+  paddleX += touchX - touchStartX;
+  touchStartX = touchX;
+  updatePaddlePosition();
 });
 
-function movePaddle() {
-  if (movingLeft && paddleX > 0) {
-    paddleX -= paddleSpeed;
-  }
-  if (movingRight && paddleX < 320) {
+// Move Paddle
+function updatePaddlePosition() {
+  if (isMovingLeft && paddleX > 0) paddleX -= paddleSpeed;
+  if (isMovingRight && paddleX < window.innerWidth - paddle.offsetWidth)
     paddleX += paddleSpeed;
-  }
   paddle.style.left = `${paddleX}px`;
-  paddle.style.transition = 'left 0.1s ease'; // Smooth paddle movement animation
-
-  requestAnimationFrame(movePaddle);
+  requestAnimationFrame(updatePaddlePosition);
 }
 
+// Ball Logic
 function moveBall() {
-  ballX += ballSpeed * ballDirectionX;
-  ballY += ballSpeed * ballDirectionY;
+  ballX += ballSpeedX;
+  ballY += ballSpeedY;
 
-  // Bounce off walls with a bounce effect
-  if (ballX <= 0 || ballX >= 380) {
-    ballDirectionX *= -1;
-    bounceSound.play();
-    ball.style.animation = 'bounce 0.2s ease-out'; // Bounce animation for ball
-    setTimeout(() => ball.style.animation = '', 200); // Reset animation
-  }
-  if (ballY <= 0) {
-    ballDirectionY *= -1;
-    bounceSound.play();
-    ball.style.animation = 'bounce 0.2s ease-out'; // Ball bounce animation
-    setTimeout(() => ball.style.animation = '', 200); // Reset animation
-  }
+  if (ballX <= 0 || ballX >= window.innerWidth - ball.offsetWidth) ballSpeedX *= -1;
+  if (ballY <= 0) ballSpeedY *= -1;
 
-  // Check for paddle collision and interaction
+  // Collision with paddle
+  const paddleRect = paddle.getBoundingClientRect();
+  const ballRect = ball.getBoundingClientRect();
   if (
-    ballY >= 570 &&
-    ballX >= paddleX &&
-    ballX <= paddleX + 80
+    ballRect.bottom >= paddleRect.top &&
+    ballRect.right >= paddleRect.left &&
+    ballRect.left <= paddleRect.right
   ) {
-    const hitPosition = (ballX - paddleX) / 80;
-    ballDirectionX = hitPosition - 0.5;
-    if (ballDirectionY > 0) ballDirectionY *= -1;
-    ballSpeed += 0.25;
-    bounceSound.play();
-    ball.style.animation = 'bounce 0.2s ease-out';
-    setTimeout(() => ball.style.animation = '', 200);
-    
-    // Increase score with a small animation
-    score += 10;
-    scoreText.classList.add('pulse'); // Trigger pulse effect for score
-    setTimeout(() => scoreText.classList.remove('pulse'), 300); // Remove pulse after animation
-
-    console.log(`Score: ${score}`);
+    ballSpeedY *= -1;
+    score++;
+    scoreDisplay.textContent = `Score: ${score}`;
   }
 
-  if (ballY > 600) {
-    lives -= 1;
-    if (lives > 0) {
-      alert(`You missed! Lives remaining: ${lives}`);
-    } else {
-      alert(`Game Over! Final Score: ${score}`);
-      restartGame();
-      return;
-    }
-    
-    // Update lives text with animation
-    livesText.classList.add('shake'); // Trigger shake effect for lives
-    setTimeout(() => livesText.classList.remove('shake'), 300); // Reset animation
-
-    ballX = 190;
-    ballY = 0;
-    ballDirectionY = 1;
-    ballDirectionX = 1;
-    ballSpeed = 3.5;
-    missSound.play();
+  // Ball falls below
+  if (ballY >= window.innerHeight) {
+    lives--;
+    livesDisplay.textContent = `Lives: ${lives}`;
+    if (lives <= 0) resetGame();
+    ballX = window.innerWidth / 2;
+    ballY = window.innerHeight / 2;
   }
 
   ball.style.left = `${ballX}px`;
@@ -123,21 +94,21 @@ function moveBall() {
   requestAnimationFrame(moveBall);
 }
 
-function restartGame() {
-  ballX = 190;
-  ballY = 0;
-  ballDirectionX = 1;
-  ballDirectionY = 1;
-  paddleX = 160;
-  ballSpeed = 3.5;
+// Reset Game
+function resetGame() {
   lives = 3;
   score = 0;
-
-  paddle.style.left = `${paddleX}px`;
-  ball.style.left = `${ballX}px`;
-  ball.style.top = `${ballY}px`;
-
-  moveBall();
+  ballX = window.innerWidth / 2;
+  ballY = window.innerHeight / 2;
+  ballSpeedX = 3;
+  ballSpeedY = -3;
+  livesDisplay.textContent = `Lives: ${lives}`;
+  scoreDisplay.textContent = `Score: ${score}`;
 }
 
-restartButton.addEventListener('click', restartGame);
+// Start the Game Logic
+function startGame() {
+  resetGame();
+  moveBall();
+  updatePaddlePosition();
+}
