@@ -3,6 +3,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   overflow: hidden;
+  background-image: url(img.png);
 }
 
 /* Welcome Screen */
@@ -12,7 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f4f4f4;
+  background-image: url(img.png);
   text-align: center;
 }
 
@@ -57,6 +58,7 @@ body {
   font-size: 24px;
 }
 
+#pause-button,
 #restart-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -65,6 +67,16 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 10px;
+}
+
+#pause-button {
+  background-color: #3498db;
+}
+
+#restart-button:hover,
+#pause-button:hover {
+  background-color: #2980b9;
 }
 
 #paddle {
@@ -130,5 +142,158 @@ body {
 
 #controls button:hover {
   background-color: #2980b9;
+}
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Center Alignment for Difficulty Buttons */
+#settings-screen {
+  display: inline-flexbox;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+
+#settings-screen h1,
+#settings-screen h2 {
+  margin-bottom: 20px;
+}
+
+.difficulty-buttons {
+  display: inline-flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+}
+
+/* Easy Button - White */
+#easy-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  color: black;
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+}
+
+#easy-button:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+/* Medium Button - Black */
+#medium-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  background-color: black;
+  border: 2px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+}
+
+#medium-button:hover {
+  background-color: #222;
+  transform: scale(1.05);
+}
+
+/* Hard Button - Red */
+#hard-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  background-color: red;
+  border: 2px solid darkred;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+}
+
+#hard-button:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+}
+
+/* Back Button */
+#back-button {
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 18px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#back-button:hover {
+  background-color: #2980b9;
+}
+#exit-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#exit-button:hover {
+  background-color: #c0392b;
+}
+
+/* Enemy Styles */
+.enemy {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: green;
+  border-radius: 50%;
+  animation: moveEnemy 3s infinite;
+}
+
+@keyframes moveEnemy {
+  0% { top: 0; left: 0; }
+  25% { top: 0; left: 90%; }
+  50% { top: 90%; left: 90%; }
+  75% { top: 90%; left: 0; }
+  100% { top: 0; left: 0; }
+}
+
+/* Falling Block Styles */
+.block {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: blue;
+  top: 0;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100vh;
+  }
+}
+
+/* Adding transition to ball and enemies */
+#ball, .enemy {
+  transition: background-color 0.2s ease;
 }
 
