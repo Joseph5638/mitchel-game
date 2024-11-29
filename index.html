@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mitchell</title>
+  <title>Mitchell Game</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,13 +12,30 @@
     <h1>Welcome to Mitchell!</h1>
     <p>Created by Krypto</p>
     <button id="start-button">Start Game</button>
+    <button id="settings-button">Settings</button>
+  </div>
+
+  <!-- Settings Screen -->
+  <div id="settings-screen" style="display: none;">
+    <h1>Settings</h1>
+    <h2>Difficulty Level</h2>
+    <div class="difficulty-buttons">
+      <button id="easy-button" class="level-button">Easy</button>
+      <button id="medium-button" class="level-button">Medium</button>
+      <button id="hard-button" class="level-button">Hard</button>
+    </div>
+    <button id="back-button">Back to Menu</button>
   </div>
 
   <!-- Game Container -->
   <div id="game-container" style="display: none;">
     <div id="header">
       <h1 id="game-title">Mitchell</h1>
-      <button id="restart-button">Restart</button>
+      <div>
+        <button id="pause-button">Pause</button>
+        <button id="restart-button">Restart</button>
+        <button id="exit-button">Exit</button>
+      </div>
     </div>
     <div id="paddle"></div>
     <div id="ball"></div>
@@ -28,7 +45,12 @@
       <button id="left-button">Left</button>
       <button id="right-button">Right</button>
     </div>
-  </div>
+  </div> <!-- Enemies --> <div class="enemy" id="enemy1"></div> <div class="enemy" 
+  id="enemy2"></div> <div class="enemy" id="enemy3"></div>
+</div> <!-- Falling Blocks --> <div id="block-container"></div>
+</div>
+  
+
   <script src="script.js"></script>
 </body>
 </html>
